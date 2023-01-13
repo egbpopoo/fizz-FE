@@ -16,14 +16,11 @@ function App() {
       const username = prompt("Welcome back: Enter your username to sign In");
       if (username) {
         const user = await API.signInWithUserName(username);
-        console.log(user);
         setUser(user);
       } else {
         throw new Error("Error: No username provided");
       }
     } catch (err: any) {
-      console.log("here");
-      console.log(err);
       setError(err.message);
     }
   };
@@ -32,14 +29,12 @@ function App() {
       const username = prompt("What username would you like");
       if (username) {
         const user = await API.signUpWithUserName(username);
-        console.log(user);
+
         setUser(user);
       } else {
         throw new Error("Error: No username provided");
       }
     } catch (err: any) {
-      console.log("here");
-      console.log(err);
       setError(err.message);
     }
   };

@@ -54,7 +54,7 @@ class API {
 
       const response = await axios.post(url, data);
       const user = this.getUserFromData(response.data.bank._userAccount);
-      console.log(response.data.bank._transactions);
+
       const transactions = response.data.bank._transactions.map(
         (transaction: any) => {
           return this.getTransactionFromData(transaction);
@@ -64,6 +64,8 @@ class API {
         account: user.account,
         transactions: transactions,
       };
+      console.log(user);
+      console.log(bank);
 
       return bank;
     } catch (error: any) {
@@ -93,7 +95,6 @@ class API {
       };
       return bank;
     } catch (error: any) {
-      console.log(error.response.data.message);
       throw new Error(error.response.data.message);
     }
   }
@@ -121,7 +122,7 @@ class API {
         account: user.account,
         transactions: transactions,
       };
-      console.log(bank);
+
       return bank;
     } catch (error: any) {
       throw new Error(error.response.data.message);
@@ -147,7 +148,7 @@ class API {
         account: user.account,
         transactions: transactions,
       };
-      console.log(bank);
+
       return bank;
     } catch (error: any) {
       throw new Error(error.response.data.message);

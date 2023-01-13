@@ -28,7 +28,6 @@ export default function BankAccount(props: BankProps) {
       const bank = await api.makePayment(props.user.id, validatedAmount);
       setBank(bank);
     } catch (err: any) {
-      console.log(err.message);
       alert(err);
     }
   };
@@ -38,7 +37,6 @@ export default function BankAccount(props: BankProps) {
       const bank = await api.PerformRepayment(props.user.id);
       setBank(bank);
     } catch (err: any) {
-      console.log(err.message);
       alert(err);
     }
   };
@@ -48,7 +46,6 @@ export default function BankAccount(props: BankProps) {
       const bank = await api.performRefund(props.user.id, transactionId);
       setBank(bank);
     } catch (err: any) {
-      console.log(err.message);
       alert(err);
     }
   };
@@ -97,13 +94,15 @@ export default function BankAccount(props: BankProps) {
         >
           <p>
             Fizz Account Balance:{" "}
-            {bank?.account.fizzAccountBalance ||
-              props.user.account.fizzAccountBalance}
+            {bank
+              ? bank.account.fizzAccountBalance
+              : props.user.account.fizzAccountBalance}
           </p>
           <p className="fizzMainBalance">
             Main Account Balance:{" "}
-            {bank?.account.mainAccountBalance ||
-              props.user.account.mainAccountBalance}
+            {bank
+              ? bank.account.mainAccountBalance
+              : props.user.account.mainAccountBalance}
           </p>
           <p>
             Fizz Spending Limit:{" "}
@@ -221,7 +220,7 @@ const Transactions = (props: TransactionProps) => {
           Refund
         </button>
       )}
-      {shouldShowRefundButton() == false && (
+      {shouldShowRefundButton() === false && (
         <p style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}>
           {" "}
           Refund not available
