@@ -1,25 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import API from "./api";
+import "./App.css";
+import BankAccount from "./pages/bank/bank";
+import NoUser from "./pages/noUser/noUser";
+import { User } from "./types";
 
 function App() {
+  const [user, setUser] = useState<User>();
+  const [error, setError] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState<string>("");
+
+  const handleLogin = async () => {
+    try {
+      const username = prompt("Welcome back: Enter your username to sign In");
+      if (username) {
+        const user = await API.signInWithUserName(username);
+        console.log(user);
+        setUser(user);
+      } else {
+        throw new Error("Error: No username provided");
+      }
+    } catch (err: any) {
+      console.log("here");
+      console.log(err);
+      setError(err.message);
+    }
+  };
+  const handleSignUp = async () => {
+    try {
+      const username = prompt("What username would you like");
+      if (username) {
+        const user = await API.signUpWithUserName(username);
+        console.log(user);
+        setUser(user);
+      } else {
+        throw new Error("Error: No username provided");
+      }
+    } catch (err: any) {
+      console.log("here");
+      console.log(err);
+      setError(err.message);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {loading && <p> loading</p>}
+      {error && (
+        <div className="Error">
+          <p> {error}.</p>
+          <p> Here is what you can do: Reload the page and try again</p>
+        </div>
+      )}
+      {user ? (
+        <BankAccount user={user} />
+      ) : (
+        <NoUser login={handleLogin} signUp={handleSignUp} />
+      )}
+    </>
   );
 }
 
